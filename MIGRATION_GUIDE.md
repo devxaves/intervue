@@ -1,4 +1,4 @@
-# PrepWise Migration Guide: Firebase to PostgreSQL
+# InterVue Migration Guide: Firebase to PostgreSQL
 
 ## Setup Instructions
 
@@ -8,7 +8,7 @@ Create a `.env.local` file in the root directory with the following variables:
 
 ```env
 # Database
-DATABASE_URL="postgresql://username:password@localhost:5432/prepwise?schema=public"
+DATABASE_URL="postgresql://username:password@localhost:5432/InterVue?schema=public"
 
 # JWT Secret (generate a secure random string)
 JWT_SECRET="your-secure-jwt-secret-key-here"
