@@ -1,5 +1,20 @@
 import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
 import { z } from "zod";
+import {
+  Briefcase,
+  Code2,
+  Brain,
+  Users,
+  Music,
+  MessageSquare,
+  Globe,
+  Sparkles,
+  BookOpen,
+  Rocket,
+  Terminal,
+  Lightbulb,
+} from "lucide-react";
+
 
 export const mappings = {
   "react.js": "react",

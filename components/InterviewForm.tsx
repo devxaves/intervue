@@ -114,7 +114,7 @@ const InterviewForm = ({ userId }: InterviewFormProps) => {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="card-border">
-        <div className="card p-8">
+        <div className="card1 p-8 bg-black">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               {/* Role Input */}
