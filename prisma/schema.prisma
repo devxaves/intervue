@@ -1,71 +1,157 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")  // For app queries (pooled)
-  directUrl = env("DIRECT_URL")    // For migrations/Studio
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id           String     @id @default(cuid())
-  email        String     @unique
-  password     String
-  name         String
-  profileURL   String?
-  resumeURL    String?
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  
-  interviews   Interview[]
-  feedback     Feedback[]
-  
+  id                    String                  @id @default(cuid())
+  email                 String                  @unique
+  password              String
+  name                  String
+  profileURL            String?
+  resumeURL             String?
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  feedback              Feedback[]
+  interviews            Interview[]
+  peerFeedbacksReceived PeerInterviewFeedback[] @relation("PeerFeedbackReviewee")
+  peerFeedbacksGiven    PeerInterviewFeedback[] @relation("PeerFeedbackReviewer")
+  peerASessions         PeerInterviewSession[]  @relation("PeerA")
+  peerBSessions         PeerInterviewSession[]  @relation("PeerB")
+  streaks               Streak?
+  tokens                Token?
+  userBadges            UserBadge[]
+
   @@map("users")
 }
 
 model Interview {
-  id           String     @id @default(cuid())
-  role         String
-  level        String
-  type         String
-  techstack    String[]
-  questions    String[]
-  coverImage   String?
-  finalized    Boolean    @default(false)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  
-  userId       String
-  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  feedback     Feedback[]
-  
+  id         String     @id @default(cuid())
+  role       String
+  level      String
+  type       String
+  techstack  String[]
+  questions  String[]
+  coverImage String?
+  finalized  Boolean    @default(false)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  userId     String
+  feedback   Feedback[]
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId, createdAt(sort: Desc)])
   @@index([finalized, createdAt(sort: Desc)])
   @@map("interviews")
 }
 
 model Feedback {
-  id                     String     @id @default(cuid())
-  totalScore             Int
-  categoryScores         Json       // Will store the array of category scores
-  strengths              String[]
-  areasForImprovement    String[]
-  finalAssessment        String
-  createdAt              DateTime   @default(now())
-  updatedAt              DateTime   @updatedAt
-  
-  interviewId            String
-  interview              Interview  @relation(fields: [interviewId], references: [id], onDelete: Cascade)
-  
-  userId                 String
-  user                   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  id                  String    @id @default(cuid())
+  totalScore          Int
+  categoryScores      Json
+  strengths           String[]
+  areasForImprovement String[]
+  finalAssessment     String
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  interviewId         String
+  userId              String
+  interview           Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([interviewId, userId])
   @@index([interviewId, userId])
   @@map("feedback")
-} 
+}
+
+model Token {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  amount    Int      @default(0)
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("tokens")
+}
+
+model Streak {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  count     Int      @default(0)
+  lastDate  DateTime
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("streaks")
+}
+
+model Badge {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  imageUrl    String
+  description String
+  createdAt   DateTime    @default(now())
+  userBadges  UserBadge[]
+
+  @@map("badges")
+}
+
+model UserBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  badgeId   String
+  awardedAt DateTime @default(now())
+  badge     Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+  @@map("user_badges")
+}
+
+model PeerInterviewSession {
+  id           String                  @id @default(cuid())
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+  participantA String
+  participantB String? // optional
+  status       String
+  feedbacks    PeerInterviewFeedback[]
+  questions    PeerInterviewQuestion[]
+  userA        User                    @relation("PeerA", fields: [participantA], references: [id], onDelete: Cascade)
+  userB        User?                   @relation("PeerB", fields: [participantB], references: [id], onDelete: Cascade) // optional
+
+  @@index([participantA, participantB])
+  @@map("peer_interview_sessions")
+}
+
+model PeerInterviewQuestion {
+  id        String               @id @default(cuid())
+  sessionId String
+  question  String
+  askedBy   String
+  createdAt DateTime             @default(now())
+  session   PeerInterviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@map("peer_interview_questions")
+}
+
+model PeerInterviewFeedback {
+  id         String               @id @default(cuid())
+  sessionId  String
+  reviewerId String
+  revieweeId String
+  score      Int
+  comments   String
+  createdAt  DateTime             @default(now())
+  reviewee   User                 @relation("PeerFeedbackReviewee", fields: [revieweeId], references: [id], onDelete: Cascade)
+  reviewer   User                 @relation("PeerFeedbackReviewer", fields: [reviewerId], references: [id], onDelete: Cascade)
+  session    PeerInterviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, reviewerId, revieweeId])
+  @@map("peer_interview_feedbacks")
+}

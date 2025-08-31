@@ -63,6 +63,46 @@ export async function createFeedback(params: CreateFeedbackParams) {
       });
     }
 
+    // BADGE LOGIC
+    // 1. First Interview + 10 tokens
+    const interviewCount = await prisma.interview.count({ where: { userId } });
+    const tokenObj = await prisma.token.findUnique({ where: { userId } });
+    const tokens = tokenObj?.amount ?? 0;
+    // Award first interview badge if this is the first interview and tokens >= 10
+    if (interviewCount === 1 && tokens >= 10) {
+      await prisma.userBadge.upsert({
+        where: { userId_badgeId: { userId, badgeId: 'badge_first_interview' } },
+        update: {},
+        create: { userId, badgeId: 'badge_first_interview' },
+      });
+    }
+    // 2. 10 tokens badge
+    if (tokens >= 10) {
+      await prisma.userBadge.upsert({
+        where: { userId_badgeId: { userId, badgeId: 'badge_10_tokens' } },
+        update: {},
+        create: { userId, badgeId: 'badge_10_tokens' },
+      });
+    }
+    // 3. 50 tokens badge
+    if (tokens >= 50) {
+      await prisma.userBadge.upsert({
+        where: { userId_badgeId: { userId, badgeId: 'badge_50_tokens' } },
+        update: {},
+        create: { userId, badgeId: 'badge_50_tokens' },
+      });
+    }
+    // 4. 7-day streak badge
+    const streakObj = await prisma.streak.findUnique({ where: { userId } });
+    const streak = streakObj?.count ?? 0;
+    if (streak >= 7) {
+      await prisma.userBadge.upsert({
+        where: { userId_badgeId: { userId, badgeId: 'badge_7_day_streak' } },
+        update: {},
+        create: { userId, badgeId: 'badge_7_day_streak' },
+      });
+    }
+
     return { success: true, feedbackId: feedback.id };
   } catch (error) {
     console.error("Error saving feedback:", error);

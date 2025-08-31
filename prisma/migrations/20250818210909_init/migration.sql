@@ -1,4 +1,23 @@
 -- CreateTable
+CREATE TABLE "streaks" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "count" INTEGER NOT NULL DEFAULT 0,
+    "lastDate" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    CONSTRAINT "streaks_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "streaks_userId_key" UNIQUE ("userId")
+);
+-- CreateTable
+CREATE TABLE "tokens" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "amount" INTEGER NOT NULL DEFAULT 0,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    CONSTRAINT "tokens_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "tokens_userId_key" UNIQUE ("userId")
+);
+-- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
