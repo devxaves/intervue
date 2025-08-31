@@ -198,7 +198,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
               <div className="flex flex-col items-end">
                 <span className="text-xs text-white/80">Balance</span>
                 <span className="text-sm font-semibold text-white">
-  {(parseFloat(walletState.balance) + 0.12).toFixed(4)} ETH
+  {(parseFloat(walletState.balance) + 15).toFixed(4)} Coins
 </span>
 
               </div>

@@ -271,7 +271,7 @@ and many more, including code architecture and reusability
     @apply flex sm:flex-row flex-col gap-10 items-center justify-between w-full;
 
     h3 {
-      @apply text-center text-primary-100 mt-5;
+      @apply text-center text-blue-600 mt-5;
     }
 
     .card-interviewer {

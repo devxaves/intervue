@@ -200,7 +200,7 @@
   .call-view {
     @apply flex sm:flex-row flex-col gap-10 items-center justify-between w-full;
     h3 {
-      @apply text-center text-primary-100 mt-5;
+      @apply text-center text-blue-600 mt-5;
     }
     .card-interviewer {
       @apply flex-center flex-col gap-2 p-7 h-[400px] purple-gradient-dark rounded-lg border-2 border-primary-200/50 flex-1 sm:basis-1/2 w-full;
@@ -497,7 +497,7 @@
   .call-view {
     @apply flex sm:flex-row flex-col gap-10 items-center justify-between w-full;
     h3 {
-      @apply text-center text-primary-100 mt-5;
+      @apply text-center text-blue-600 mt-5;
     }
     .card-interviewer {
       @apply flex-center flex-col gap-2 p-7 h-[400px] blue-gradient-dark rounded-lg border-2 border-primary-200/50 flex-1 sm:basis-1/2 w-full;

@@ -60,7 +60,7 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-2xl mx-auto py-10">
-      <h1 className="text-4xl font-extrabold mb-8 text-center text-primary-100 drop-shadow-lg">Your Profile</h1>
+      <h1 className="text-4xl font-extrabold mb-8 text-center text-blue-600 drop-shadow-lg">Your Profile</h1>
       {loading ? (
         <div className="text-center">Loading...</div>
       ) : (
@@ -77,7 +77,7 @@ export default function ProfilePage() {
               <div className="text-3xl font-extrabold text-gray-900 drop-shadow">{streak} <span className="text-base font-bold">days</span></div>
             </div>
           </div>
-          <h2 className="text-2xl font-bold mb-6 text-center text-primary-100">Badges & Achievements</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">Badges & Achievements</h2>
           <div className="grid grid-cols-2 gap-6 justify-center">
             {badges.length === 0 ? (
               <div className="col-span-2 text-center text-lg text-gray-300 py-8">No badges yet</div>

@@ -28,7 +28,7 @@ export default function LeaderboardPage() {
 
   return (
     <div className="max-w-3xl mx-auto py-10">
-      <h1 className="text-4xl font-extrabold mb-8 text-center text-primary-100 drop-shadow-lg">Leaderboard</h1>
+      <h1 className="text-4xl font-extrabold mb-8 text-center text-blue-600 drop-shadow-lg">Leaderboard</h1>
       <div className="flex justify-center mb-8 gap-4">
         <button
           className={`px-6 py-2 rounded-xl font-bold shadow transition-all duration-150 ${
