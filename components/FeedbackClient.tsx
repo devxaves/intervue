@@ -23,49 +23,49 @@ export default function FeedbackClient({ userId, interviewId, interviewRole, fee
             <span className="capitalize">{interviewRole}</span> Interview
           </h1>
         </div>
-        <div className="flex flex-row justify-center ">
-          <div className="flex flex-row gap-5">
+        <div className="flex flex-row text-black justify-center ">
+          <div className="flex text-black flex-row gap-5">
             {/* Overall Impression */}
             <div className="flex flex-row gap-2 items-center">
               <Image src="/star.svg" width={22} height={22} alt="star" />
-              <p>
+              <p className="text-black">
                 Overall Impression: <span className="text-primary-200 font-bold">{feedback?.totalScore}</span>/100
               </p>
             </div>
             {/* Date */}
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-row gap-2 text-black">
               <Image src="/calendar.svg" width={22} height={22} alt="calendar" />
-              <p>{feedback?.createdAt ? dayjs(feedback.createdAt).format("MMM D, YYYY h:mm A") : "N/A"}</p>
+              <p className="text-black">{feedback?.createdAt ? dayjs(feedback.createdAt).format("MMM D, YYYY h:mm A") : "N/A"}</p>
             </div>
           </div>
         </div>
         <hr />
-        <p>{feedback?.finalAssessment}</p>
+        <p className="text-black">{feedback?.finalAssessment}</p>
         {/* Interview Breakdown */}
-        <div className="flex flex-col gap-4">
-          <h2>Breakdown of the Interview:</h2>
+        <div className="flex flex-col text-black gap-4">
+          <h2 className="text-black">Breakdown of the Interview:</h2>
           {feedback?.categoryScores?.map((category: any, index: number) => (
-            <div key={index}>
-              <p className="font-bold">
+            <div key={index} className="text-black">
+              <p className="font-bold text-black">
                 {index + 1}. {category.name} ({category.score}/100)
               </p>
-              <p>{category.comment}</p>
+              <p className="text-black">{category.comment}</p>
             </div>
           ))}
         </div>
         <div className="flex flex-col gap-3">
-          <h3>Strengths</h3>
+          <h3 className="text-black">Strengths</h3>
           <ul>
             {feedback?.strengths?.map((strength: string, index: number) => (
-              <li key={index}>{strength}</li>
+              <li key={index} className="text-black" >{strength}</li>
             ))}
           </ul>
         </div>
         <div className="flex flex-col gap-3">
-          <h3>Areas for Improvement</h3>
+          <h3 className="text-black">Areas for Improvement</h3>
           <ul>
             {feedback?.areasForImprovement?.map((area: string, index: number) => (
-              <li key={index}>{area}</li>
+              <li key={index} className="text-black">{area}</li>
             ))}
           </ul>
         </div>
